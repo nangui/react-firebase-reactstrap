@@ -1,39 +1,72 @@
 import React, { Component } from 'react'
 import { Form, FormGroup, Col, Input, Button } from 'reactstrap'
+import { database } from '../firebase'
 
 class FormAddPost extends Component {
+
     constructor(props) {
         super(props)
         this.state = {
             title: '',
             body: ''
         }
-
+        // Binding des méthodes
         this.onInputChange = this.onInputChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
+    /**
+     * Cette méthode permet de suivre les changements des differents champs
+     * @param {*} event 
+     */
     onInputChange (event) {
         this.setState({
             [event.target.name]: event.target.value
         })
-        console.log(event.target.value)
+    }
+
+    /**
+     * Cette méthode permet de soumettre le formulaire
+     * @param {*} event 
+     */
+    handleSubmit (event) {
+        event.preventDefault()
+        // Nous allons créer un objet post à partir des données saisie
+        // En plus du titre et le corps, notre post aura une date de création
+        let post = {
+            title: this.state.title,
+            body: this.state.body,
+            createAt:(new Date()).toLocaleString()
+        }
+        //console.log(post)
+        database.push(post)
     }
 
     render () {
         return <div>
             <h1 className="text-center">Nouveau post</h1>
-            <Form>
+            <Form onSubmit={this.handleSubmit}>
               <FormGroup row>
                 <Col sm={{ size: 8, offset: 2 }}>
-                  <Input type="text" name="title" placeholder="Title" onChange={this.onInputChange} ref="title" />
+                  <Input 
+                    type="text" 
+                    name="title" 
+                    placeholder="Title" 
+                    onChange={this.onInputChange} 
+                    ref="title" />
                 </Col>
               </FormGroup>
               <FormGroup row>
                 <Col sm={{ size: 8, offset: 2 }}>
-                  <Input type="textarea" name="body" placeholder="Body" onChange={this.onInputChange} ref="body" />
+                  <Input 
+                    type="textarea" 
+                    name="body" 
+                    placeholder="Body" 
+                    onChange={this.onInputChange} 
+                    ref="body" />
                 </Col>
               </FormGroup>
-              <Button color="success">Add</Button>
+              <Button color="primary">Add</Button>
             </Form>
           </div>;
     }
