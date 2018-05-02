@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Form, FormGroup, Col, Input, Button } from 'reactstrap'
 import { database } from '../firebase'
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
 
 class FormAddPost extends Component {
 
@@ -11,18 +13,18 @@ class FormAddPost extends Component {
             body: ''
         }
         // Binding des méthodes
-        this.onInputChange = this.onInputChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.onHandleChange = this.onHandleChange.bind(this)
     }
 
     /**
-     * Cette méthode permet de suivre les changements des differents champs
+     * Cette méthode permet de suivre les changements de notre editeur wiziwig
      * @param {*} event 
      */
-    onInputChange (event) {
+    onHandleChange (event) {
         this.setState({
-            [event.target.name]: event.target.value
-        });
+            body: event
+        })
     }
 
     /**
@@ -61,31 +63,60 @@ class FormAddPost extends Component {
             <h1 className="text-center">Nouveau post</h1>
             <Form onSubmit={this.handleSubmit}>
               <FormGroup row>
-                <Col sm={{ size: 8, offset: 2 }}>
+                <Col sm={{ size: 8}}>
                   <Input 
                    value={this.state.title} 
                     type="text" 
                     name="title" 
-                    placeholder="Title" 
-                    onChange={this.onInputChange} 
+                    placeholder="Write your post title here" 
+                    onChange={(event) => {this.setState({title: event.target.value})}} 
                     ref="title" />
                 </Col>
               </FormGroup>
               <FormGroup row>
-                <Col sm={{ size: 8, offset: 2 }}>
-                  <Input 
+                <Col sm={{ size: 12}}>
+                  <ReactQuill 
+                    modules={FormAddPost.modules}
+                    formats={FormAddPost.formats}
                     value={this.state.body} 
-                    type="textarea" 
-                    name="body" 
-                    placeholder="Body" 
-                    onChange={this.onInputChange} 
-                    ref="body" />
+                    placeholder="Write your post content here" 
+                    onChange={this.onHandleChange} 
+                  />
                 </Col>
               </FormGroup>
-              <Button color="primary">Add</Button>
+              <Button color="primary">Add Post</Button>
             </Form>
           </div>;
     }
 }
+
+FormAddPost.modules = {
+    toolbar: [
+        [ {header: '1'}, {header: '2'}, {font: []} ],
+        [{size: []}],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{'list': 'ordered'}, {'list': 'bullet'}],
+        ['link', 'image', 'video'],
+        ['clean'],
+        ['code-block']
+    ]
+}  
+
+FormAddPost.formats = [
+    'header', 
+    'font', 
+    'size',
+    'bold', 
+    'italic', 
+    'underline', 
+    'strike', 
+    'blockquote',
+    'list', 
+    'bullet',
+    'link', 
+    'image', 
+    'video', 
+    'code-block'
+]
 
 export default FormAddPost
