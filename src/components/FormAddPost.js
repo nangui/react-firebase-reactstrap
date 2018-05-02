@@ -22,7 +22,7 @@ class FormAddPost extends Component {
     onInputChange (event) {
         this.setState({
             [event.target.name]: event.target.value
-        })
+        });
     }
 
     /**
@@ -31,15 +31,29 @@ class FormAddPost extends Component {
      */
     handleSubmit (event) {
         event.preventDefault()
-        // Nous allons créer un objet post à partir des données saisie
-        // En plus du titre et le corps, notre post aura une date de création
-        let post = {
-            title: this.state.title,
-            body: this.state.body,
-            createAt:(new Date()).toLocaleString()
+        // On test si l'un des champs est vide
+        if(this.state.title !== '' && this.state.body !== '') {
+            // Nous allons créer un objet post à partir des données saisie
+            // En plus du titre et le corps, notre post aura une date de création
+            let post = {
+                title: this.state.title,
+                body: this.state.body,
+                createAt:(new Date()).toLocaleString()
+            }
+            //console.log(post)
+            database.push(post).then((response) => {
+                console.log(response)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+            this.setState({
+                title: '',
+                body: ''
+            })
+        } else {
+            console.log('Données non valide')
         }
-        //console.log(post)
-        database.push(post)
     }
 
     render () {
@@ -49,6 +63,7 @@ class FormAddPost extends Component {
               <FormGroup row>
                 <Col sm={{ size: 8, offset: 2 }}>
                   <Input 
+                   value={this.state.title} 
                     type="text" 
                     name="title" 
                     placeholder="Title" 
@@ -59,6 +74,7 @@ class FormAddPost extends Component {
               <FormGroup row>
                 <Col sm={{ size: 8, offset: 2 }}>
                   <Input 
+                    value={this.state.body} 
                     type="textarea" 
                     name="body" 
                     placeholder="Body" 
