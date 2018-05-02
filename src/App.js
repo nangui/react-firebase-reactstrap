@@ -3,7 +3,7 @@ import './App.css';
 import logo from './logo.png'
 import FormAddPost from './components/FormAddPost'
 import ListPost from './components/ListPost'
-import { database } from './firebase'
+import { database } from './utils/firebase/firebase'
 import _ from 'lodash'
 
 class App extends Component {

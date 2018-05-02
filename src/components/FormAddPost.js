@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Form, FormGroup, Col, Input, Button } from 'reactstrap'
-import { database } from '../firebase'
+import { database } from '../utils/firebase/firebase'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 

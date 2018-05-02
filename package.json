@@ -9,10 +9,12 @@
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-quill": "^1.2.7",
+    "react-redux": "^5.0.7",
     "react-render-html": "^0.6.0",
     "react-s-alert": "^1.4.1",
     "react-scripts": "1.1.4",
-    "reactstrap": "^5.0.0"
+    "reactstrap": "^5.0.0",
+    "redux": "^4.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
